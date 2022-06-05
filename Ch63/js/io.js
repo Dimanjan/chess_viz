@@ -37,6 +37,7 @@ function PrintMoveList() {
 
 	for(index = GameBoard.moveListStart[GameBoard.ply]; index < GameBoard.moveListStart[GameBoard.ply+1]; ++index) {
 		move = GameBoard.moveList[index];
+		console.log(move)
 		console.log('IMove:' + num + ':(' + index + '):' + PrMove(move) + ' Score:' +  GameBoard.moveScores[index]);
 		num++;
 	}

@@ -4,116 +4,69 @@ let VIZCOLORS={
     "neutral": "#ffffff",
 
 }
-function SqAttackedFreq(sq, side) {
-	var pce;
-	var t_sq;
+
+
+
+
+function LegalMoves() {
+
 	var index;
-    var count=0;
+	var move;
 
-    // check if sq lies outside the board
-	if (FilesBrd[sq] == SQUARES.OFFBOARD || sq<0 || sq>=SQUARES.NUM_SQUARES){
-        console.log("SqAttackedFreq: invalid sq");
-        return 0;
-    }
+	let lst=[];
 
-    // Pawns
-	if(side == COLOURS.WHITE) {
-		if(GameBoard.pieces[sq - 11] == PIECES.wP){
-            console.log("SqAttackedFreq: wpawn");
-
-            count+=1;
-        } 
-        if (GameBoard.pieces[sq - 9] == PIECES.wP) {
-            console.log("SqAttackedFreq: wpawn");
-
-			count+=1;
-		}
-	} else {
-		if(GameBoard.pieces[sq + 11] == PIECES.bP){
-            console.log("SqAttackedFreq: bpawn");
-
-            count+=1;
-        } 
-        if (GameBoard.pieces[sq + 9] == PIECES.bP) {
-            console.log("SqAttackedFreq: bpawn");
-
-			count+=1;
-		}
+	for(index = GameBoard.moveListStart[GameBoard.ply]; index < GameBoard.moveListStart[GameBoard.ply+1]; ++index) {
+		move = GameBoard.moveList[index];
+		lst.push(move)
+		
 	}
-	
-    // Knights
-	for(index = 0; index < KnDir.length ; index++) {
-		pce = GameBoard.pieces[sq + KnDir[index]];
-		if(pce != SQUARES.OFFBOARD && PieceCol[pce] == side && PieceKnight[pce] == BOOL.TRUE) {
-            console.log("SqAttackedFreq: knight found");
+	return lst;
+}
+function PrLegalMoves() {
 
-			count+=1;
-		}
-	}
-	// Rooks and Queens
-	for(index = 0; index < RkDir.length ; ++index) {		
-		dir = RkDir[index];
-		t_sq = sq + dir;
-		pce = GameBoard.pieces[t_sq];
-		while(pce != SQUARES.OFFBOARD) {
-			if(pce != PIECES.EMPTY) {
-				if(PieceRookQueen[pce] == BOOL.TRUE && PieceCol[pce] == side) {
-                    console.log(PrSq(t_sq))
-                    console.log("SqAttackedFreq: rook/queen");
+	var index;
+	var move;
 
-					count+=1;
-				}
-			}
-			t_sq += dir;
-            console.log({t_sq, dir, pce});
-			pce = GameBoard.pieces[t_sq];
-		}
-	}
-    // Bishops and Queens
-	
-	for(index = 0; index < BiDir.length; ++index) {		
-		dir = BiDir[index];
-		t_sq = sq + dir;
-		pce = GameBoard.pieces[t_sq];
-		while(pce != SQUARES.OFFBOARD) {
-			if(pce != PIECES.EMPTY) {
-				if(PieceBishopQueen[pce] == BOOL.TRUE && PieceCol[pce] == side) {
-            console.log("SqAttackedFreq: bishop/queen");
+	let lst=[];
 
-					count+=1;
-				}
-			}
-			t_sq += dir;
-			pce = GameBoard.pieces[t_sq];
-		}
+	for(index = GameBoard.moveListStart[GameBoard.ply]; index < GameBoard.moveListStart[GameBoard.ply+1]; ++index) {
+		move = GameBoard.moveList[index];
+		lst.push(PrMove(move))
+		
 	}
-	
-    // King
-	for(index = 0; index < KiDir.length; index++) {
-		pce = GameBoard.pieces[sq + KiDir[index]];
-		if(pce != SQUARES.OFFBOARD && PieceCol[pce] == side && PieceKing[pce] == BOOL.TRUE) {
-            console.log("SqAttackedFreq: King found");
-			count+=1;
-		}
-	}
-	
-	return count;
-	
+	return lst;
 
 }
-function no_of_attackers(square){
-    if (GameBoard.side == COLOURS.WHITE){
-        
-    }
+
+function area_of_influence(){
+	let moves=LegalMoves()
+	let lst=[]
+	for(let i=0;i<moves.length;i++){
+		lst.push(TOSQ(moves[i]))
+	}
+	return lst;	
 }
 
-function no_of_defenders(square){
-    let noOfDefenders = square.getAttribute("noOfDefenders");
-    square.innerHTML=noOfDefenders;
+function color_square(sq=41,color=VIZCOLORS.attacked){
+	var file = FilesBrd[sq];
+	var rank = RanksBrd[sq];
+	var rankName = "rank" + (rank+1);
+	var	fileName = "file" + (file+1);
+
+	// select square with both classes
+	var squareGUI = document.querySelector("." + rankName + "." + fileName);
+
+	// set color
+	squareGUI.style.backgroundColor = color;
+}
+function color_toSquares(moves,color=VIZCOLORS.defended){
+	for(let i=0;i<moves.length;i++){
+		let to=TOSQ(moves[i])
+		color_square(to,color)
+	}
 }
 
-function coloring_square(square){
-    let noOfAttacks = no_of_attackers(square);
-    let noOfDefenders= no_of_defenders(square);
-    square.style.backgroundColor=color;
+function color_area_of_influence(){
+	let moves=LegalMoves()
+	color_toSquares(moves)
 }
