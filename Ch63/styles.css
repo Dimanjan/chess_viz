@@ -31,15 +31,18 @@
 }
 
 .Dark {
-	background-color:#5fbcd3;
+	border: 1px solid black;
+	background-color:rgba(1, 1, 255, 0.445);
 }
 
 .Light {
-	background-color:#afdde9;
+	border: 1px solid black;
+	background-color:rgba(1, 1, 255, 0.445);
+
 }
 
 .SqSelected {
-	background-color:#216778;
+	background-color:#fbff00a9 !important;
 }
 
 .rank1 { top: 420px; }

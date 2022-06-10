@@ -1,9 +1,3 @@
-let VIZCOLORS={
-    "attacked": "#ff0000",
-    "defended": "#00ff00",
-    "neutral": "#ffffff",
-
-}
 
 
 
@@ -57,7 +51,9 @@ function color_square(sq=41,color=VIZCOLORS.attacked){
 	var squareGUI = document.querySelector("." + rankName + "." + fileName);
 
 	// set color
-	squareGUI.style.backgroundColor = color;
+	 squareGUI.style.backgroundColor = color;
+
+
 }
 function color_toSquares(moves,color=VIZCOLORS.defended){
 	for(let i=0;i<moves.length;i++){
@@ -68,5 +64,11 @@ function color_toSquares(moves,color=VIZCOLORS.defended){
 
 function color_area_of_influence(){
 	let moves=LegalMoves()
-	color_toSquares(moves)
+	if (GameBoard.side == COLOURS.WHITE){
+		color=VIZCOLORS.white_lite
+	} else {
+		color=VIZCOLORS.black_lite
+	}
+	color_toSquares(moves,color)
 }
+color_area_of_influence()

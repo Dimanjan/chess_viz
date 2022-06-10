@@ -165,8 +165,11 @@ function AddGUIPiece(sq, pce) {
 	$("#Board").append(imageString);
 }
 
+
 function MoveGUIPiece(move) {
+	color_area_of_influence()
 	
+
 	var from = FROMSQ(move);
 	var to = TOSQ(move);	
 	
